@@ -105,12 +105,26 @@ int main(int argc, char const *argv[]) {
 
             for (int i = 0; i < test_data.size(); ++i) {
 
-                
+                cout << test_data[i];
+
+                nand_p.change_values(test_data[i].values);
+                nand_p.weighted_sum();
+
+                or_p.change_values(test_data[i].values);
+                or_p.weighted_sum();
+
+                f_vect outputs = { (float) nand_p.output, (float) or_p.output };
+                and_p.change_values(outputs);
+                and_p.weighted_sum();
+
+                cout << endl;
+                cout << "NAND: " << nand_p.output << " OR: " << or_p.output << " AND: " << and_p.output << endl;
+                cout << "MLP Output: " << and_p.output << endl << endl;
             }
         }
     }
     else {
-        cout << "input file missing" << endl;
+        cout << "test data file missing" << endl;
     }
     return 0;
 }
@@ -120,5 +134,14 @@ ostream & ADJZAI001_perceptron::operator<<(ostream & os, perceptron & p) {
     for (int n = 0; n < p.weights.size(); ++n) {
         os << n+1 << " " << p.weights[n] << endl;
     }
+    return os;
+}
+
+ostream & ADJZAI001_perceptron::operator<<(ostream & os, training_instance & t) {
+    os << "Values:" << endl;
+    for (int n = 0; n < t.values.size(); ++n) {
+        os << n+1 << " " << t.values[n] << endl;
+    }
+    os << "Target: " << t.target << endl;
     return os;
 }
