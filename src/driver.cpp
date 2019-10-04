@@ -55,23 +55,73 @@ int main(int argc, char const *argv[]) {
     if (argc > 1) {
         string test = string(argv[1]);
 
-        if (load_training("and.txt", and_training)) {
+        if (load_training("training/and.txt", and_training)) {
             cout << "AND training data loaded: " << and_training.size() << " instances" << endl;
 
-            perceptron and1 = perceptron(
+            perceptron and_p = perceptron(
                 { 0, 0 }, { 0, 0 }, 1.5, 0.2
             );
 
-            int it = 0;
-            while (it < 5) {
+            int it = 0, converge = 0;
+            while (converge < instances) {
+                converge = 0;
                 cout << "Iteration " << it+1 << endl;
                 for (int i = 0; i < instances; ++i) {
-                    and1.change_values(and_training[i].values);
-                    and1.adjust_weights(and_training[i]);
-                    cout << and1 << endl;
+                    and_p.change_values(and_training[i].values);
+                    and_p.adjust_weights(and_training[i]);
+
+                    if (and_p.convergence == 2) converge++;
                 }
                 it++;
             }
+
+            cout << and_p << endl;
+        }
+
+        if (load_training("training/or.txt", or_training)) {
+            cout << "OR training data loaded: " << or_training.size() << " instances" << endl;
+
+            perceptron or_p = perceptron(
+                { 0, 0 }, { 0, 0 }, 0.5, 0.2
+            );
+
+            int it = 0, converge = 0;
+            while (converge < instances) {
+                converge = 0;
+                cout << "Iteration " << it+1 << endl;
+                for (int i = 0; i < instances; ++i) {
+                    or_p.change_values(or_training[i].values);
+                    or_p.adjust_weights(or_training[i]);
+
+                    if (or_p.convergence == 2) converge++;
+                }
+                it++;
+            }
+
+            cout << or_p << endl;
+        }
+
+        if (load_training("training/nand.txt", nand_training)) {
+            cout << "NAND training data loaded: " << nand_training.size() << " instances" << endl;
+
+            perceptron nand_p = perceptron(
+                { 0, 0 }, { 0, 0 }, -1.5, 0.2
+            );
+
+            int it = 0, converge = 0;
+            while (converge < instances) {
+                converge = 0;
+                cout << "Iteration " << it+1 << endl;
+                for (int i = 0; i < instances; ++i) {
+                    nand_p.change_values(nand_training[i].values);
+                    nand_p.adjust_weights(nand_training[i]);
+
+                    if (nand_p.convergence == 2) converge++;
+                }
+                it++;
+            }
+
+            cout << nand_p << endl;
         }
     }
     else {

@@ -30,6 +30,7 @@ void perceptron::adjust_weights(training_instance t) {
     else
         output = 0;
 
+    convergence = 0;
     for (int i = 0; i < values.size(); ++i) {
         float delta_w = eta * (t.target - output) * values[i];
         
