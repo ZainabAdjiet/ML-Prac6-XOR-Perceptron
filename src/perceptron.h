@@ -37,11 +37,13 @@ namespace ADJZAI001_perceptron {
         int convergence;
 
         perceptron(f_vect w, f_vect v, float th, float e);
-        void change_values(f_vect v);
-        void adjust_weights(training_instance t);
+        void change_values(f_vect & v);
+        void weighted_sum();
+        void adjust_weights(int target);
     };
 
-    bool load_training(std::string filename, std::vector<training_instance> & training);
+    bool load_data(std::string filename, std::vector<training_instance> & training);
+    void train_perceptron(perceptron & perc, std::vector<training_instance> & training);
     std::ostream & operator<<(std::ostream & os, perceptron & p);
 }
 

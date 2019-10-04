@@ -7,20 +7,16 @@
 using namespace ADJZAI001_perceptron;
 using namespace std;
 
-int instances;
-vector<training_instance> and_training;
-vector<training_instance> or_training;
-vector<training_instance> nand_training;
-
 /****************************************************************/
 /* Functions
 /****************************************************************/
 
-bool ADJZAI001_perceptron::load_training(string filename, vector<training_instance> & training) {
+bool ADJZAI001_perceptron::load_data(string filename, vector<training_instance> & training) {
     ifstream file(filename);
     string line;    // hold line in file
     float val;
     float target;
+    int instances;
 
     if (file.is_open()) {
 
@@ -50,78 +46,67 @@ bool ADJZAI001_perceptron::load_training(string filename, vector<training_instan
     }  
 }
 
+void ADJZAI001_perceptron::train_perceptron(perceptron & perc, vector<training_instance> & training) {
+    int it = 0, converge = 0, instances = training.size();
+    while (converge < instances) {
+        converge = 0;
+        ++it;
+        for (int i = 0; i < instances; ++i) {
+            perc.change_values(training[i].values);
+            perc.weighted_sum();
+            perc.adjust_weights(training[i].target);
+
+            if (perc.convergence == 2) converge++;
+        }
+    }
+    cout << "After " << it << " iterations:" << endl;
+    cout << perc << endl;
+}
+
 int main(int argc, char const *argv[]) {
     
     if (argc > 1) {
         string test = string(argv[1]);
 
-        if (load_training("training/and.txt", and_training)) {
-            cout << "AND training data loaded: " << and_training.size() << " instances" << endl;
+        vector<training_instance> and_training;
+        vector<training_instance> or_training;
+        vector<training_instance> nand_training;
 
-            perceptron and_p = perceptron(
+        vector<training_instance> test_data;
+
+        perceptron and_p = perceptron(
                 { 0, 0 }, { 0, 0 }, 1.5, 0.2
             );
 
-            int it = 0, converge = 0;
-            while (converge < instances) {
-                converge = 0;
-                cout << "Iteration " << it+1 << endl;
-                for (int i = 0; i < instances; ++i) {
-                    and_p.change_values(and_training[i].values);
-                    and_p.adjust_weights(and_training[i]);
-
-                    if (and_p.convergence == 2) converge++;
-                }
-                it++;
-            }
-
-            cout << and_p << endl;
-        }
-
-        if (load_training("training/or.txt", or_training)) {
-            cout << "OR training data loaded: " << or_training.size() << " instances" << endl;
-
-            perceptron or_p = perceptron(
+        perceptron or_p = perceptron(
                 { 0, 0 }, { 0, 0 }, 0.5, 0.2
             );
 
-            int it = 0, converge = 0;
-            while (converge < instances) {
-                converge = 0;
-                cout << "Iteration " << it+1 << endl;
-                for (int i = 0; i < instances; ++i) {
-                    or_p.change_values(or_training[i].values);
-                    or_p.adjust_weights(or_training[i]);
-
-                    if (or_p.convergence == 2) converge++;
-                }
-                it++;
-            }
-
-            cout << or_p << endl;
-        }
-
-        if (load_training("training/nand.txt", nand_training)) {
-            cout << "NAND training data loaded: " << nand_training.size() << " instances" << endl;
-
-            perceptron nand_p = perceptron(
+        perceptron nand_p = perceptron(
                 { 0, 0 }, { 0, 0 }, -1.5, 0.2
             );
 
-            int it = 0, converge = 0;
-            while (converge < instances) {
-                converge = 0;
-                cout << "Iteration " << it+1 << endl;
-                for (int i = 0; i < instances; ++i) {
-                    nand_p.change_values(nand_training[i].values);
-                    nand_p.adjust_weights(nand_training[i]);
+        if (load_data("training/and.txt", and_training)) {
+            cout << "AND training data loaded: " << and_training.size() << " instances" << endl;
+            train_perceptron(and_p, and_training);
+        }
 
-                    if (nand_p.convergence == 2) converge++;
-                }
-                it++;
+        if (load_data("training/or.txt", or_training)) {
+            cout << "OR training data loaded: " << or_training.size() << " instances" << endl;
+            train_perceptron(or_p, or_training);
+        }
+
+        if (load_data("training/nand.txt", nand_training)) {
+            cout << "NAND training data loaded: " << nand_training.size() << " instances" << endl;
+            train_perceptron(nand_p, nand_training);
+        }
+
+        if (load_data(test, test_data)) {
+
+            for (int i = 0; i < test_data.size(); ++i) {
+
+                
             }
-
-            cout << nand_p << endl;
         }
     }
     else {
