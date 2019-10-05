@@ -1,0 +1,10 @@
+# Q1
+
+The minimum number of 2-input perceptrons needed to solve the XOR problem is 3 connected as a Multi-layered Perceptron.
+The 2 XOR inputs should be fed to both a NAND perceptron and an OR perceptron which will make up the first layer.
+The outputs of those 2 perceptrons should then be fed to an AND perceptron which will produce the final output.
+
+# Q2
+
+The training examples for each individual perceptron can be found in the 'training' folder.
+4 training examples were used for each perceptron (each one's truth table) and thus 12 examples were used in total.
