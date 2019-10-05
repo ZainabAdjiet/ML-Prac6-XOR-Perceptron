@@ -19,7 +19,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(FLAGS) $(INCLUDE) -c -o $@ $<
 
 run:
-	./perceptron
+	./perceptron test_data.txt output.txt
 	
 clean:
 	rm -rf $(OBJ_DIR)/* perceptron
