@@ -43,7 +43,7 @@ namespace ADJZAI001_perceptron {
     };
 
     bool load_data(std::string filename, std::vector<training_instance> & training);
-    void train_perceptron(perceptron & perc, std::vector<training_instance> & training);
+    int train_perceptron(perceptron & perc, std::vector<training_instance> & training);
     std::ostream & operator<<(std::ostream & os, perceptron & p);
     std::ostream & operator<<(std::ostream & os, training_instance & t);
 }
